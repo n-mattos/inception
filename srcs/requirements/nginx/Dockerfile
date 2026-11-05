@@ -1,6 +1,6 @@
-FROM nginx:bookworm
+FROM debian:bookworm
 
-RUN apt-get update && apt-get install -y openssl \
+RUN apt-get update && apt-get install -y openssl nginx \
     && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /etc/nginx/ssl
 
@@ -14,9 +14,13 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 ENV NGINX_SSL_KEY=/etc/nginx/ssl/nginx.key
 ENV NGINX_SSL_CRT=/etc/nginx/ssl/nginx.crt
 
+# Remove the default nginx configuration
+RUN rm -f /etc/nginx/sites-enabled/default
 # Copy the custom nginx configuration
-RUN rm /etc/nginx/conf.d/default.conf
 COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Set up the index.html file (testing purposes)
 COPY index.html /usr/share/nginx/html/index.html
+
+# Keep the container running
+CMD ["nginx", "-g", "daemon off;"]

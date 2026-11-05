@@ -48,3 +48,6 @@ The project consist of three main services: Nginx, WordPress, and MariaDB. The N
 - [VM Installation](https://github.com/Bakr-1/inceptionVm-guide/blob/main/README.md)
 - [Docker](https://github.com/vbachele/Inception/blob/main/README.md)
 - [FastCGI Proxying in Nginx](https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx)
+- [WP-CLI Guide](https://www.dreamhost.com/blog/guide-to-wp-cli/)
+- [WP-CLI Installation Guide](https://make.wordpress.org/cli/handbook/guides/installing/)
+- [PHP-FPM Configuration](https://github.com/php/php-src/blob/PHP-8.2/sapi/fpm/www.conf.in)
