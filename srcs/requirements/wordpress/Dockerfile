@@ -5,6 +5,7 @@ RUN apt-get update && apt-get -y install \
 	curl \
 	bash \
 	php8.2 \
+	php8.2-curl \
 	php8.2-cgi \
 	php8.2-mysql \
 	php8.2-fpm \
@@ -19,9 +20,11 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 # Copy .conf file
 COPY conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
+COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Confirm wp is installed correctly
 RUN wp --info
 
-# Keep the container running with PHP-FPM in the foreground
-CMD ["/usr/sbin/php-fpm8.2", "-F"]
+# Expose the port for PHP-FPM
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

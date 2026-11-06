@@ -2,8 +2,29 @@ services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx
+    depends_on:
+      - wordpress
     ports:
-      - 8080:443 # host:container
+      - ${NGINX_PORT}:443
+    volumes:
+      - wordpress_data:/var/www/html:ro
+    restart: always
+    networks:
+      - network
+
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    secrets:
+      - db_root_password
+      - db_user_password
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+    volumes:
+      - mariadb_data:/var/lib/mysql
     restart: always
     networks:
       - network
@@ -11,9 +32,44 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
+    secrets:
+      - db_user_password
+      - wp_admin_password
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    environment:
+      WORDPRESS_DB_HOST: ${DB_HOST}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: ${DB_USER}
+    volumes:
+      - wordpress_data:/var/www/html
     restart: always
     networks:
       - network
+
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/nmattos-/data/mariadb
+      o: bind
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/nmattos-/data/wordpress
+      o: bind
+
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_user_password:
+    file: ../secrets/db_password.txt
+  wp_admin_password:
+    file: ../secrets/wp_admin_password.txt
 
 networks:
   network:

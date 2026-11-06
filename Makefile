@@ -4,7 +4,7 @@ NO_COLOR    = \033[m
 
 COM_STRING   = "Compiling"
 
-.PHONY: all re build run clean fclean status help
+.PHONY: all re build run clean fclean status help confirm wipe
 
 all: build run status ## Builds, launches, and displays the status of the containers.
 
@@ -22,6 +22,15 @@ clean: ## Stops the containers.
 
 fclean: clean ## Stops and removes the containers, networks, and volumes.
 	@docker compose -f srcs/docker-compose.yml down -v --rmi all --remove-orphans
+
+wipe: fclean ## Removes the volumes and their data.
+	@read -p "Are you sure you want to remove the volumes and their data? [y/N] " answer; \
+		if [ "$$answer" != "y" ] && [ "$$answer" != "Y" ]; then \
+			echo "Operation cancelled."; \
+			exit 1; \
+		fi
+	@sudo find /home/nmattos-/data/mariadb -mindepth 1 -delete
+	@sudo find /home/nmattos-/data/wordpress -mindepth 1 -delete
 
 status: ## Displays the status of the containers.
 	@docker compose -f srcs/docker-compose.yml ps
