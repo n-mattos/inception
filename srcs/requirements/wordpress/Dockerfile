@@ -11,6 +11,7 @@ RUN apt-get update && apt-get -y install \
 	php8.2-fpm \
 	php8.2-cli \
 	php8.2-mbstring \
+	mariadb-client \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Set up WordPress CLI (wp-cli)
