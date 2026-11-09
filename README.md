@@ -8,10 +8,10 @@ The containers communicate with each other through a Docker network.
 # **Instructions**
 1. Launch the virtual machine through Oracle VirtualBox.
 2. Connect to the virtual machine using SSH. (Can be done through VSCode)
-3. Run `docker-compose up -d` to start the containers.
+3. Run `make` to start the containers.
 4. To open the browser, use the command `startx`, then right-click and select `Web Browser` to open the browser.
-5. Access the WordPress site by navigating to `---` in your web browser.
-6. To stop the containers, run `docker-compose down`.
+5. Access the WordPress site by navigating to `nmattos.42.fr` in your web browser.
+6. To stop the containers, run `make clean`.
 
 # **Project Description**
 The project consist of three main services: Nginx, WordPress, and MariaDB. The Nginx service acts as a reverse proxy for the WordPress service, which is a content management system (CMS) that allows users to create and manage websites. The MariaDB service is a database management system that stores the data for the WordPress site.
