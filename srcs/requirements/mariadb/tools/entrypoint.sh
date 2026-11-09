@@ -22,6 +22,7 @@ if [ ! -f /var/lib/mysql/.initialized ]; then
 		--socket="$socket" --pid-file=/run/mysqld/bootstrap.pid --console &
 	server_pid=$!
 
+	# Await response
 	until mariadb-admin --protocol=socket --socket="$socket" --user=root ping >/dev/null 2>&1; do
 		sleep 1
 	done
