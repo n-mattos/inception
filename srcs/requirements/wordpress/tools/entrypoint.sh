@@ -4,6 +4,7 @@ set -eu
 # Grab secrets
 db_password=$(cat /run/secrets/db_user_password)
 wp_admin_password=$(cat /run/secrets/wp_admin_password)
+wp_basic_password=$(cat /run/secrets/wp_user_password)
 
 # Create WordPress directory
 wordpress_dir=/var/www/html
@@ -31,6 +32,16 @@ if ! wp core is-installed --path="$wordpress_dir" --allow-root; then
 		--admin_password="$wp_admin_password" \
         --admin_email="$WP_ADMIN_EMAIL" \
         --allow-root
+fi
+
+# Add 'basic' user if it does not exist
+if ! wp user get "$WP_BASIC_USER" --path="$wordpress_dir" --allow-root; then
+	wp user create \
+		"$WP_BASIC_USER" "$WP_BASIC_EMAIL" \
+		--role=author \
+		--user_pass="$wp_basic_password" \
+		--path="$wordpress_dir" \
+		--allow-root
 fi
 
 # Allow php-fpm to write to files

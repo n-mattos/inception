@@ -4,7 +4,7 @@ services:
     build: ./requirements/nginx
     depends_on:
       - wordpress
-    ports:
+    ports:	# host:container
       - ${NGINX_PORT}:443
     volumes:
       - wordpress_data:/var/www/html:ro
@@ -35,6 +35,7 @@ services:
     secrets:
       - db_user_password
       - wp_admin_password
+      - wp_user_password
     depends_on:
       - mariadb
     env_file:
@@ -49,20 +50,22 @@ services:
     networks:
       - network
 
+# Named volumes for persistent data storage
 volumes:
   mariadb_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/nmattos-/data/mariadb
+      device: /home/nmattos-/data/mariadb	# Store on host machine according to subject
       o: bind
   wordpress_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/nmattos-/data/wordpress
+      device: /home/nmattos-/data/wordpress	# Store on host machine according to subject
       o: bind
 
+# Information too sensitive for .env file
 secrets:
   db_root_password:
     file: ../secrets/db_root_password.txt
@@ -70,6 +73,8 @@ secrets:
     file: ../secrets/db_password.txt
   wp_admin_password:
     file: ../secrets/wp_admin_password.txt
+  wp_user_password:
+    file: ../secrets/wp_user_password.txt
 
 networks:
   network:
