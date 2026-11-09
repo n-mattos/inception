@@ -2,15 +2,22 @@
 ...
 
 # **Modify Ports**
-- **Nginx (HTTPS):** `NGINX_PORT` in `srcs/.env` sets the host port, mapped to container port 443 in `srcs/docker-compose.yml`. For example, it can be changed to `8443` to access the site at `https://<login>.42.fr:8443`. Nginx still listens on 443. If WordPress is already installed, update its Site Address in **Settings > General**.
+- **Nginx (HTTPS):**\
+`NGINX_PORT` in `srcs/.env` sets the host port, mapped to container port 443 in `srcs/docker-compose.yml`. For example, it can be changed to `8443` to access the site at `https://<login>.42.fr:8443`. Nginx still listens on 443. If WordPress is already installed, update its Site Address in **Settings > General**.
 
-- **MariaDB:** listens on internal port 3306 and is not published to the host. To change its internal port, set `port = <port>` in `srcs/requirements/mariadb/conf/50-server.conf`, and set `DB_HOST=mariadb:<port>` in `srcs/.env`. For an installed site, also update `DB_HOST` in `wordpress_data`'s `wp-config.php`. This can be done using `docker compose exec wordpress wp config set DB_HOST 'mariadb:<port>' --path=/var/www/html --allow-root`\
+- **Nginx (Internal)**\
+Update the listener lines in `srcs/requirements/nginx/conf/nginx.conf`.
+Also change the container port in `srcs/docker-compose.yml`. `${NGINX_PORT}:<port>`
+
+- **MariaDB:**\
+listens on internal port 3306 and is not published to the host. To change its internal port, set `port = <port>` in `srcs/requirements/mariadb/conf/50-server.conf`, and set `DB_HOST=mariadb:<port>` in `srcs/.env`. For an installed site, also update `DB_HOST` in `wordpress_data`'s `wp-config.php`. This can be done using `docker compose exec wordpress wp config set DB_HOST 'mariadb:<port>' --path=/var/www/html --allow-root`\
 Confirm using:\
 `docker compose exec mariadb mariadb -uroot -p -Nse "SELECT @@port;"`\
 `docker compose exec wordpress wp config get DB_HOST --path=/var/www/html --allow-root`\
 `docker compose exec wordpress wp db check --path=/var/www/html --allow-root`
 
-- **WordPress PHP-FPM:** listens on internal port 9000. To change it, update `listen = <port>` in `srcs/requirements/wordpress/conf/www.conf` and `fastcgi_pass wordpress:<port>` in `srcs/requirements/nginx/conf/nginx.conf` to match.\
+- **WordPress PHP-FPM:**\
+listens on internal port 9000. To change it, update `listen = <port>` in `srcs/requirements/wordpress/conf/www.conf` and `fastcgi_pass wordpress:<port>` in `srcs/requirements/nginx/conf/nginx.conf` to match.\
 Confirm using:\
 `docker compose exec wordpress grep '^listen =' /etc/php/8.2/fpm/pool.d/www.conf`\
 `PORT=9000; docker compose exec -e PORT="$PORT" wordpress php -r '$p=(int)getenv("PORT"); $s=@fsockopen("127.0.0.1",$p); echo $s ? "Port $p is open\n" : "Port $p is closed\n"; if ($s) fclose($s);'`
