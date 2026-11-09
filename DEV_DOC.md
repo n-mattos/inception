@@ -1,5 +1,9 @@
 # **Setup from Scratch**
-...
+1. Clone this git repository using `git clone git@github.com:n-mattos/inception.git`.
+2. Create necessary secrets within `/secrets` using `touch secrets/{db_root_password,db_password,wp_admin_password,wp_user_password}.txt && chmod 600 secrets/*.txt`. Fill them with their respective data.
+3. Rename `.env.example` to `.env` and fill it accordingly.
+4. For named volumes `mariadb` and `wordpress` in `docker-compose.yml`, either create the directories, or change their path to fit your machine.
+5. Run `make` to build and start the project
 
 # **Modify Ports**
 - **Nginx (HTTPS):**\
