@@ -10,8 +10,10 @@ A Makefile is provided to simplify the build/launch process of the containers. T
 | help | Displays the available commands and their descriptions.
 | make | Builds, launches, and displays the status of the containers.
 | re | Rebuilds the containers and launches them.
-| make build | Builds the containers.
-| make run | Launches the containers.
-| make clean | Stops the containers.
-| make fclean | Stops and removes the containers, networks, and volumes.
-| make status | Displays the status of the containers.
+| build | Builds the containers.
+| run | Launches the containers.
+| clean | Stops the containers.
+| fclean | Stops and removes the containers, networks, and volumes.
+| wipe | Removes the volumes and their data.
+| status | Displays the status of the containers.
+| log | Displays the logs of the containers.

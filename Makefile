@@ -35,6 +35,9 @@ wipe: fclean ## Removes the volumes and their data.
 status: ## Displays the status of the containers.
 	@docker compose -f srcs/docker-compose.yml ps
 
+log: ## Displays the logs of the containers.
+	@docker compose -f srcs/docker-compose.yml logs
+
 help: ## Displays the available commands and their descriptions.
 	@awk 															\
 		'BEGIN {													\
