@@ -53,3 +53,5 @@ The project consist of three main services: Nginx, WordPress, and MariaDB. The N
 - [PHP-FPM Configuration](https://github.com/php/php-src/blob/PHP-8.2/sapi/fpm/www.conf.in)
 - [Setting up Docker Compose](https://medium.com/@jeyanth_kumar/setting-up-wordpress-with-mariadb-and-phpmyadmin-using-docker-compose-a-complete-guide-8852e5fd010e)
 - [Docker Compose Volumes](https://docs.docker.com/reference/compose-file/volumes/)
+
+AI has been used to test and debug configurations, assist in writing readable documentation, and as a tutor for unfamiliar concepts.
