@@ -17,7 +17,11 @@ If you wish to use connect to the virtual machine using ssh, follow these steps.
 
 # **Modify Ports**
 - **Nginx (HTTPS):**\
-`NGINX_PORT` in `srcs/.env` sets the host port, mapped to container port 443 in `srcs/docker-compose.yml`. For example, it can be changed to `8443` to access the site at `https://<login>.42.fr:8443`. Nginx still listens on 443. If WordPress is already installed, update its Site Address in **Settings > General**.
+`NGINX_PORT` in `srcs/.env` sets the host port, mapped to container port 443 in `srcs/docker-compose.yml`. For example, it can be changed to `8443` to access the site at `https://<login>.42.fr:8443`. Nginx still listens on 443. If WordPress is already installed, update its WP_URL in `srcs/.env`.\
+Also, run\
+`docker compose exec wordpress wp option update home 'https://nmattos-.42.fr:8443' --path=/var/www/html --allow-root` and\
+`docker compose exec wordpress wp option update siteurl 'https://nmattos-.42.fr:8443' --path=/var/www/html --allow-root`\
+to change the port without wiping.
 
 - **Nginx (Internal)**\
 Update the listener lines in `srcs/requirements/nginx/conf/nginx.conf`.
