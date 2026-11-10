@@ -3,7 +3,17 @@
 2. Create necessary secrets within `/secrets` using `touch secrets/{db_root_password,db_password,wp_admin_password,wp_user_password}.txt && chmod 600 secrets/*.txt`. Fill them with their respective data.
 3. Rename `.env.example` to `.env` and fill it accordingly.
 4. For named volumes `mariadb` and `wordpress` in `docker-compose.yml`, either create the directories, or change their path to fit your machine.
-5. Run `make` to build and start the project
+5. Run `make` to build and start the project.
+
+**SSH (VSCode)**
+If you wish to use connect to the virtual machine using ssh, follow these steps.
+1. Within the VM, run `sudo nano /etc/ssh/sshd_config`.
+2. Change Port 22 to 4242.
+3. Restart the service using `sudo service ssh restart`.
+4. Within VSCode, install the extension `Remote - SSH` from Microsoft.
+5. Press the SSH icon bottom left of the VSCode window, and `Connect to Host...`.
+6. `Add New SSH Host...`, and insert `<username>@localhost -p 4242`.
+7. Select the first config, then insert the connected user's password.
 
 # **Modify Ports**
 - **Nginx (HTTPS):**\
