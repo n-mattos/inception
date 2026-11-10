@@ -23,14 +23,21 @@ clean: ## Stops the containers.
 fclean: clean ## Stops and removes the containers, networks, and volumes.
 	@docker compose -f srcs/docker-compose.yml down -v --rmi all --remove-orphans
 
-wipe: fclean ## Removes the volumes and their data.
-	@read -p "Are you sure you want to remove the volumes and their data? [y/N] " answer; \
+wipe: ## Removes the volumes and their data.
+	@if [ -n "$$(find ../data/wordpress -mindepth 1 -print -quit)" ] || \
+	     [ -n "$$(find ../data/mariadb -mindepth 1 -print -quit)" ]; then \
+		printf "Are you sure you want to remove the volumes and their data? [y/N] "; \
+		IFS= read -r answer; \
 		if [ "$$answer" != "y" ] && [ "$$answer" != "Y" ]; then \
 			echo "Operation cancelled."; \
 			exit 1; \
-		fi
-	@sudo find /home/nmattos-/data/mariadb -mindepth 1 -delete
-	@sudo find /home/nmattos-/data/wordpress -mindepth 1 -delete
+		fi; \
+		docker compose -f srcs/docker-compose.yml down -v --rmi all --remove-orphans; \
+		sudo find ../data/mariadb -mindepth 1 -delete; \
+		sudo find ../data/wordpress -mindepth 1 -delete; \
+	else \
+		echo "Data directories are empty; skipping wipe."; \
+	fi
 
 status: ## Displays the status of the containers.
 	@docker compose -f srcs/docker-compose.yml ps
